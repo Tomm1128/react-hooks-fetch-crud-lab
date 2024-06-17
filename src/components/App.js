@@ -13,6 +13,20 @@ function App() {
     .then(data => setQuestionList(data))
   }, [])
 
+  const updateAnswer = (id, answer) => {
+    const updatedQuestions = questionList.map(question => {
+      if(question.id === id){
+        return {
+          ...question,
+          correctIndex: answer
+        }
+      } else {
+        return question
+      }
+    })
+    setQuestionList(updatedQuestions)
+  }
+
   const handleUpdateQuestions = (newQuestion) => {
     setQuestionList([...questionList, newQuestion])
   }
@@ -27,7 +41,11 @@ function App() {
       <AdminNavBar onChangePage={setPage} />
       {page === "Form" ?
         <QuestionForm onQuestionSubmit={handleUpdateQuestions} /> :
-        <QuestionList questionList={questionList} onDelete={deleteQuestion}/>
+        <QuestionList
+          questionList={questionList}
+          onDelete={deleteQuestion}
+          onAnswerUpdate={updateAnswer}
+        />
       }
     </main>
   );
